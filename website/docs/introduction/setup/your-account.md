@@ -23,7 +23,7 @@ Clone the GitHub repository or download and unzip a source archive file:
 ```bash test=false
 $ git clone https://github.com/aws-samples/eks-workshop-v2.git
 $ cd eks-workshop-v2
-$ git checkout latest
+$ git checkout build-33ab134
 $ cd terraform
 ```
 
@@ -50,7 +50,7 @@ The Terraform state file (`terraform.tfstate`) is used by Terraform to track the
 As the workshop is updated with new content it may be necessary to update your lab environment. You can do so by running the following inside of the `eks-workshop-v2` directory:
 
 ```bash test=false
-$ git pull origin latest
+$ git pull origin build-33ab134
 $ cd terraform 
 $ terraform init -upgrade
 # You can use plan command to preview the resources that will be create if you want
