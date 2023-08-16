@@ -1,5 +1,5 @@
 ---
-title: "Unsafe execution into pod in `kube-system` namespace"
+title: "Unsafe execution in kube-system namespace"
 sidebar_position: 124
 ---
 
