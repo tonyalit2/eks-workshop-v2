@@ -12,5 +12,7 @@ export PATH="$PATH:$HOME/bin"
 
 export MANIFESTS_REF="$BRANCH"
 
+echo "Using ref $MANIFESTS_REF"
+
 npm install
 npm run build
