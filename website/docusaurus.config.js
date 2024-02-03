@@ -23,6 +23,7 @@ const manifestsRepository = process.env.MANIFESTS_REPOSITORY || 'eks-workshop-v2
 
 const labTimesEnabled = process.env.LAB_TIMES_ENABLED || false;
 
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'EKS Workshop',
