@@ -6,10 +6,10 @@ kubectl_version='1.29.0'
 kubectl_checksum='0e03ab096163f61ab610b33f37f55709d3af8e16e4dcc1eb682882ef80f96fd5'
 
 # renovate: depName=helm/helm
-helm_version='3.14.3'
+helm_version='3.14.4'
 
 # renovate: depName=eksctl-io/eksctl
-eksctl_version='0.175.0'
+eksctl_version='0.176.0'
 
 kubeseal_version='0.18.4'
 kubeseal_checksum='2e765b87889bfcf06a6249cde8e28507e3b7be29851e4fac651853f7638f12f3'
@@ -21,10 +21,10 @@ yq_version='4.43.1'
 flux_version='2.2.3'
 
 # renovate: depName=argoproj/argo-cd
-argocd_version='2.10.6'
+argocd_version='2.10.9'
 
 # renovate: depName=hashicorp/terraform
-terraform_version='1.7.5'
+terraform_version='1.8.2'
 
 # renovate: depName=aws/amazon-ec2-instance-selector
 ec2_instance_selector_version='2.4.1'
