@@ -5,7 +5,7 @@ sidebar_custom_props: { "module": true }
 description: "Automatically manage compute for Amazon Elastic Kubernetes Service with Karpenter."
 ---
 
-{{% required-time %}}
+::required-time
 
 :::tip Before you start
 Prepare your environment for this section:
@@ -16,7 +16,7 @@ $ prepare-environment autoscaling/compute/karpenter
 
 This will make the following changes to your lab environment:
 
-- Install Karpenter in the Amazon EKS cluster
+- Installs various IAM roles and other AWS resources required by Karpenter
 
 You can view the Terraform that applies these changes [here](https://github.com/VAR::MANIFESTS_OWNER/VAR::MANIFESTS_REPOSITORY/tree/VAR::MANIFESTS_REF/manifests/modules/autoscaling/compute/karpenter/.workshop/terraform).
 

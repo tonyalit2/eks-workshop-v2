@@ -5,7 +5,7 @@ sidebar_custom_props: { "module": true }
 description: "Automatically manage compute for Amazon Elastic Kubernetes Service with Cluster Autoscaler."
 ---
 
-{{% required-time %}}
+::required-time
 
 :::tip Before you start
 Prepare your environment for this section:
@@ -16,7 +16,7 @@ $ prepare-environment autoscaling/compute/cluster-autoscaler
 
 This will make the following changes to your lab environment:
 
-- Install the Kubernetes Cluster Autoscaler in the Amazon EKS cluster
+- Create an IAM role that will be used by cluster-autoscaler
 
 You can view the Terraform that applies these changes [here](https://github.com/VAR::MANIFESTS_OWNER/VAR::MANIFESTS_REPOSITORY/tree/VAR::MANIFESTS_REF/manifests/modules/autoscaling/compute/cluster-autoscaler/.workshop/terraform).
 

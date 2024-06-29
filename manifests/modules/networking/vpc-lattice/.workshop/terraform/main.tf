@@ -1,6 +1,6 @@
 module "eks_blueprints_addons" {
   source  = "aws-ia/eks-blueprints-addons/aws"
-  version = "1.16.2"
+  version = "1.16.3"
 
   enable_aws_load_balancer_controller = true
   aws_load_balancer_controller = {
@@ -15,7 +15,7 @@ module "eks_blueprints_addons" {
 
 module "iam_assumable_role_lattice" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "5.39.0"
+  version                       = "5.39.1"
   create_role                   = true
   role_name                     = "${var.addon_context.eks_cluster_id}-lattice"
   provider_url                  = var.addon_context.eks_oidc_issuer_url
@@ -62,5 +62,34 @@ data "aws_vpc" "this" {
   tags = {
     created-by = "eks-workshop-v2"
     env        = var.addon_context.eks_cluster_id
+  }
+}
+
+resource "kubernetes_manifest" "ui_nlb" {
+  manifest = {
+    "apiVersion" = "v1"
+    "kind"       = "Service"
+    "metadata" = {
+      "name"      = "ui-nlb"
+      "namespace" = "ui"
+      "annotations" = {
+        "service.beta.kubernetes.io/aws-load-balancer-type"            = "external "
+        "service.beta.kubernetes.io/aws-load-balancer-scheme"          = "internet-facing"
+        "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type" = "instance"
+      }
+    }
+    "spec" = {
+      "type" = "LoadBalancer"
+      "ports" = [{
+        "port"       = 80
+        "targetPort" = 8080
+        "name"       = "http"
+      }]
+      "selector" = {
+        "app.kubernetes.io/name"      = "ui"
+        "app.kubernetes.io/instance"  = "ui"
+        "app.kubernetes.io/component" = "service"
+      }
+    }
   }
 }

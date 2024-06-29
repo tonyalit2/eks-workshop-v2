@@ -15,6 +15,15 @@
     {
       "matchDepTypes": ["required_version"],
       "enabled": false
+    },
+    {
+      "matchDepNames": ["kubernetes/kubernetes"],
+      "allowedVersions": "/^v1.29.[0-9]+$/"
+    },
+    {
+      "matchDepNames": ["kubernetes/autoscaler"],
+      "extractVersion": "^cluster-autoscaler-(?<version>.*)$",
+      "allowedVersions": "/^1.29.[0-9]+$/"
     }
   ],
   "customManagers": [
@@ -26,6 +35,24 @@
       ],
       "datasourceTemplate": "github-releases",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["vars\\.tf$"],
+      "matchStrings": [
+        "#\\s*renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?(?: extractVersion=(?<extractVersion>.*?))?\\s*default\\s*=\\s*\"(?<currentValue>.*)\""
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["vars\\.tf$"],
+      "matchStrings": [
+        "#\\s*renovate-helm: depName=(?<depName>.*?)( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*?))?(?: extractVersion=(?<extractVersion>.*?))?\\s*default\\s*=\\s*\"(?<currentValue>.*)\""
+      ],
+      "datasourceTemplate": "helm",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{/if}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}https://aws.github.io/eks-charts{{/if}}"
     }
   ],
   "ignoreDeps": ["github.com/aws-ia/terraform-aws-eks-blueprints"]

@@ -2,22 +2,11 @@
 
 environment=$1
 shell_command=$2
-shell_simple_command=$3
 
 set -Eeuo pipefail
 
 # You can run script with finch like CONTAINER_CLI=finch ./shell.sh <terraform_context> <shell_command>
 CONTAINER_CLI=${CONTAINER_CLI:-docker}
-
-# Right now the container images are only designed for amd64
-export DOCKER_DEFAULT_PLATFORM=linux/amd64
-
-AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-""}
-
-if [ ! -z "$AWS_DEFAULT_REGION" ]; then
-  echo "Error: AWS_DEFAULT_REGION must be set"
-  exit 1
-fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
@@ -29,24 +18,9 @@ container_image='eks-workshop-environment'
 
 (cd $SCRIPT_DIR/../lab && $CONTAINER_CLI build -q -t $container_image .)
 
-aws_credential_args=""
-
-ASSUME_ROLE=${ASSUME_ROLE:-""}
-
-if [ ! -z "$ASSUME_ROLE" ]; then
-  source $SCRIPT_DIR/lib/generate-aws-creds.sh
-
-  aws_credential_args="-e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY -e AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN"
-fi
-
-command_args=""
+source $SCRIPT_DIR/lib/generate-aws-creds.sh
 
 interactive_args=""
-
-if [ ! -z "$shell_simple_command" ]; then
-  export EKS_CLUSTER_NAME=''
-  shell_command="$shell_simple_command"
-fi
 
 if [ -z "$shell_command" ]; then
   echo "Starting shell in container..."

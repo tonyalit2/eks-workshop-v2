@@ -1,15 +1,6 @@
-provider "aws" {
-  region = "us-east-1"
-  alias  = "virginia"
-}
-
-data "aws_ecrpublic_authorization_token" "token" {
-  provider = aws.virginia
-}
-
 module "ebs_csi_driver_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "5.39.0"
+  version = "5.39.1"
 
   role_name_prefix = "${var.addon_context.eks_cluster_id}-ebs-csi-"
 
@@ -27,7 +18,7 @@ module "ebs_csi_driver_irsa" {
 
 module "eks_blueprints_addons" {
   source  = "aws-ia/eks-blueprints-addons/aws"
-  version = "1.16.2"
+  version = "1.16.3"
 
   cluster_name      = var.addon_context.eks_cluster_id
   cluster_endpoint  = var.addon_context.aws_eks_cluster_endpoint
@@ -54,30 +45,4 @@ resource "time_sleep" "wait" {
   ]
 
   create_duration = "10s"
-}
-
-data "http" "kubecost_values" {
-  url = "https://raw.githubusercontent.com/kubecost/cost-analyzer-helm-chart/v1.106.3/cost-analyzer/values-eks-cost-monitoring.yaml"
-}
-
-module "kubecost" {
-  source  = "aws-ia/eks-blueprints-addon/aws"
-  version = "1.1.1"
-
-  depends_on = [
-    time_sleep.wait
-  ]
-
-  name             = "kubecost"
-  description      = "Kubecost Helm Chart deployment configuration"
-  namespace        = "kubecost"
-  create_namespace = true
-  chart            = "cost-analyzer"
-  chart_version    = "1.106.3"
-  repository       = "oci://public.ecr.aws/kubecost"
-  values           = [data.http.kubecost_values.body, templatefile("${path.module}/values.yaml", {})]
-  wait             = true
-
-  repository_username = data.aws_ecrpublic_authorization_token.token.user_name
-  repository_password = data.aws_ecrpublic_authorization_token.token.password
 }

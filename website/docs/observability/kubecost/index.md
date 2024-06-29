@@ -5,7 +5,7 @@ sidebar_custom_props: { "module": true }
 description: "Gain cost visibility and insights for teams using Amazon Elastic Kubernetes Service with Kubecost."
 ---
 
-{{% required-time %}}
+::required-time
 
 :::tip Before you start
 Prepare your environment for this section:
@@ -18,7 +18,6 @@ This will make the following changes to your lab environment:
 
 - Install the AWS Load Balancer controller in the Amazon EKS cluster
 - Install the EKS managed addon for the EBS CSI driver
-- Install Kubecost in the Amazon EKS cluster
 
 You can view the Terraform that applies these changes [here](https://github.com/VAR::MANIFESTS_OWNER/VAR::MANIFESTS_REPOSITORY/tree/VAR::MANIFESTS_REF/manifests/modules/observability/kubecost/.workshop/terraform).
 

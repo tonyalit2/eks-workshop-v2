@@ -202,14 +202,32 @@ export class MarkdownSh {
         this.debugMessage(`Calling suite ${hook} hook at ${hookPath}`);
 
         if (!dryRun) {
-          let response = await shell.exec(
-            `bash ${hookPath} ${hook}`,
-            hookTimeout,
-            false,
-            {},
-          );
-
-          this.debugMessage(response.output);
+          try {
+            let response = await shell.exec(
+              `bash ${hookPath} ${hook}`,
+              hookTimeout,
+              false,
+              {},
+            );
+          } catch (e: any) {
+            if (e instanceof ShellTimeout) {
+              console.log(e.message);
+              console.log("Command timed out");
+              console.log(`stdout: \n${e.stdout}`);
+              console.log(`stderr: \n${e.stderr}`);
+              assert.fail(
+                `Script failed to complete within ${e.timeout} seconds`,
+              );
+            } else if (e instanceof ShellError) {
+              console.log(e.message);
+              console.log(`Command returned error code ${e.code}`);
+              console.log(`stdout: \n${e.stdout}`);
+              console.log(`stderr: \n${e.stderr}`);
+              assert.fail("Script exit with an error code");
+            } else {
+              assert.fail(`An unknown error occurred: ${e.message}`);
+            }
+          }
         }
 
         this.debugMessage(`Completed suite ${hook} hook`);

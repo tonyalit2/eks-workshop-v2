@@ -33,3 +33,10 @@ variable "resources_precreated" {
   description = "Have expensive resources been created already"
   type        = bool
 }
+
+variable "argocd_chart_version" {
+  description = "The chart version of argocd to use"
+  type        = string
+  # renovate-helm: depName=argo-cd registryUrl=https://argoproj.github.io/argo-helm
+  default = "5.36.0"
+}
